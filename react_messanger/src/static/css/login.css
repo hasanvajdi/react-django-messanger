@@ -1,0 +1,300 @@
+@font-face {
+    font-family: "aviny";
+    src: url("../font/Aviny2-1.ttf") format("woff2"),
+         url("../font/Aviny2-1.ttf") format("woff");
+}
+
+
+body{
+    font-family: aviny !important;
+    letter-spacing: 2px;
+    background-color : #EDEDED !important;
+}
+
+
+.login-container{
+    width : 60% !important;
+    height : auto;
+    margin : 70px auto auto auto;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px gray;
+}
+
+
+.right-side{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+
+.form-container{
+    padding : 0px !important;
+    background-color : white;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+
+
+
+
+.messanger-cover{
+    width : 100%;
+    height: 100%;
+    background-color : #444444;
+    position : absolute;
+    opacity : 0.9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+
+.login-text{
+    color : #EDEDED;
+    text-align : center;
+    font-size : 60px;
+    letter-spacing: 15px;
+    font-style: normal !important;
+    margin-top : 30px;
+}
+
+
+.social-icons{
+    margin-top : auto;
+    }
+
+
+
+
+.icon{
+    color : white;
+    margin-right : 15px;
+    font-size : 19px;
+    margin-bottom : 15px;
+    color : #EDEDED;
+}
+
+.icon:hover{
+
+    color : #DA0037;
+    transition : 0.8s;
+    cursor : pointer;
+}
+
+
+.username-input{
+    font-size : 19px !important;
+}
+
+
+.input:focus{
+    border-color : #444444 !important;
+    box-shadow: 0px 0px 5px gray !important;
+}
+
+
+.input{
+    word-spacing: 3px;
+}
+
+.login-col{
+    margin : auto auto auto auto !important;
+}
+
+
+.form-check-input:focus{
+    box-shadow: 0px 0px 3px #DA0037 !important;
+    border-color : #DA0037 !important;
+}
+
+
+.form-check-input:checked{
+    background-color : #DA0037 !important;
+    border-color : #DA0037 !important;
+}
+
+
+.login-submit-form{
+    background-color :  #444444 !important;
+    opacity : 0.9;
+    font-size : 20px !important;
+    letter-spacing: 2px;
+    margin-top : 30px;
+
+}
+
+
+.login-formgroup{
+    margin-top : 30px;
+}
+
+
+
+
+.or-signup{
+    display : flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding : 0px !important;
+}
+
+
+.or-signup-text{
+    margin-top : auto !important;
+    letter-spacing: normal;
+    font-size : 23px;
+}
+
+
+.form-check-input{
+    margin-top : 7px !important;
+}
+
+
+.login-label{
+    font-size : 25px;
+    color : #171717;
+}
+
+
+.remember-name{
+    margin-left : 5px;
+    font-size : 20px;
+    letter-spacing : normal !important;
+}
+
+
+.forgot-password{
+    letter-spacing: normal;
+    font-size : 20px;
+    word-spacing: 3px;
+}
+
+
+@media (min-width : 1200px) and (max-width : 1999px){
+
+    .messanger-pic{
+        width : 200px !important;
+    }
+}
+
+
+@media (min-width : 991px) and (max-width : 1200px){
+    .messanger-pic{
+        width : 180px !important;
+    }
+
+    .or-signup-text{
+        margin-left : 15px;
+    }
+}
+
+
+@media (min-width : 768px) and (max-width : 991px){
+    .messanger-pic{
+        width : 150px !important;
+    }
+
+
+    .login-text{
+        margin-top : 30px;
+    }
+
+
+    .or-signup-text{
+        margin-left : 23px;
+    }
+}
+
+
+@media (min-width : 576px) and (max-width : 767px){
+    .login-container{
+        width : 90% !important;
+        height : auto !important;
+    }
+
+
+    .right-side{
+        height: 55%;
+        border-bottom-left-radius: 0px;
+        border-top-right-radius: 3px;
+    }
+
+    .messanger-cover{
+        border-bottom-left-radius: 0px;
+        border-top-right-radius: 3px;
+    }
+
+
+    .login-text{
+        margin-top : 0px;
+        font-size : 60px !important;
+
+    }
+
+    .messanger-pic{
+        width : 150px !important;
+    }
+
+
+    .form-container{
+        border-bottom-left-radius: 3px;
+    }
+
+
+    .login-label{
+        font-size : 20px !important;
+    }
+}
+
+
+@media (max-width : 576px){
+    .login-container{
+        height : auto !important;
+    }
+
+
+    .login-label{
+        font-size : 18px !important;
+    }
+
+    .remember-name{
+        font-size : 17px !important;
+        margin-top : 3px;
+    }
+
+
+    .forgot-password{
+        font-size :17px !important;
+    }
+
+
+    .input{
+        font-size : 15px !important;
+    }
+
+
+    .messanger-pic{
+        width : 100px !important;
+    }
+
+
+    .right-side{
+        height : 200px !important;
+        border-bottom-left-radius: 0px;
+        border-top-right-radius: 3px !;
+    }
+
+
+    .login-text{
+        margin-top : -7px;
+        font-size : 60px !important;
+    }
+}

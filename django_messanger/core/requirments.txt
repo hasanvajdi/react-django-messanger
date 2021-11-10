@@ -1,0 +1,11 @@
+channels
+dj-rest-auth
+Django==3.2.9
+django-allauth
+django-cors-headers
+djangorestframework
+djangorestframework-jwt
+djangorestframework-simplejwt
+mysql-connector-python
+mysqlclient
+
