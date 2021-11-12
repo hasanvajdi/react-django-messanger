@@ -1,0 +1,59 @@
+{% load static %}
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src = "jquery.js"></script>
+        <title></title>
+        <style>
+            @font-face {
+                font-family: "aviny";
+                src: url("Aviny2-1.ttf") format("woff2"),
+                    url("Aviny2-1.ttf") format("woff");
+            }
+
+
+
+            body{
+                background-color: #EDEDED;
+                font-family: aviny !important;
+                font-size : 30px;
+                word-spacing: 6px;
+            }
+
+            .active-button{
+                width : 400px;
+                height : 60px;
+                background-color : #DA0037;
+                font-size : 30px;
+                border-radius: 3px;
+                margin-top : 50px;
+                font-family: aviny;
+                font-size : 35px;
+                text-align : center;
+            }
+
+
+            .click-me{
+                word-spacing: 4px;
+                cursor: pointer;
+                text-decoration: none !important;
+                color: white !important;
+                text-align : center;
+            }
+
+        </style>
+    </head>
+    <body style="direction : ltr !important;">
+        <div style = "font-weight: 1000;font-size : 30px !important;">Hello {{username}}</div><br><br>
+        <div style = "font-size : 25px !important;">you have request to activate your account in {{website}} website</div>
+        <div style = "font-size : 25px !important;">click blowe button to active your account</div>
+        <div class="active-button">
+            <a href="http://localhost:3000/AcceptEmail/{{uuid}}" class = "click-me">clicke me</a>
+        </div>
+    </body>
+
+    
+</html>

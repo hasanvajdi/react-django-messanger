@@ -9,10 +9,30 @@ import './../static/css/AcceptAccount.css';
 const AcceptAccount = (props)=>{
     const [email, setEmail] = useState();
     const history = useHistory();
-    console.log("props user : ", props.user)
+
     const submitEmail = (e)=>{
         e.preventDefault()
-        console.log(email)
+        var infor = {
+                    "user" : `${props.user.pk}`,
+                    "email" : `${email}`,
+                    "username" : `${props.user.username}`,
+                    "status" : false
+                }
+        infor = JSON.stringify(infor)
+        console.log("infor : ", infor)
+
+        axios.post("http://localhost:8000/email/send/",infor,{
+            headers : {
+                "Content-Type" : "application/json",
+            }
+        })
+        .then(res=>{
+            console.log(res)
+        })
+        .catch(err=>{
+            console.log(err)
+            window.alert("this user registered before")
+        })
     }
 
 
