@@ -3,7 +3,7 @@
 *.pot
 *.pyc
 venv/
-.env
+
 __pycache__/
 local_settings.py
 db.sqlite3
