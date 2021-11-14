@@ -41,8 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'corsheaders',
     'users.apps.UsersConfig',
+    'chat.apps.ChatConfig',
 
     'rest_framework',
     'rest_framework.authtoken',
@@ -68,7 +70,7 @@ CORS_ORIGIN_WHITELIST =  (
     'http://127.0.0.1:8000'
 )
 
-
+ASGI_APPLICATION = "core.asgi.application"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
