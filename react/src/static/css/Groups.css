@@ -1,0 +1,91 @@
+.group-name{
+    font-size : 22px;
+    letter-spacing: 0px !important;
+
+}
+
+.new-group-channel{
+    font-size : 23px;
+    letter-spacing: 0px !important;
+    word-spacing: 4px;
+    margin-left : 5px;
+    color : #444444
+}
+
+.plus-news-group-channel:hover > * {
+    color : #DA0037;
+    transition: 0.5s;
+    cursor : pointer;
+}
+
+.create-group-modal{
+    letter-spacing: 0px !important;
+    word-spacing: 3px !important;
+}
+
+.ant-modal-title{
+    font-size : 35px !important;
+    letter-spacing: 0px !important;
+}
+
+.ant-modal-body{
+    font-size : 25px !important;
+}
+
+.group-name-input{
+    font-size : 23px !important;
+}
+
+
+.ant-upload-text, .ant-upload-hint{
+    font-size : 23px !important;
+}
+
+.ant-upload-drag:hover{
+    border-color : #DA0037 !important;
+}
+
+
+.ant-input{
+    outline : none !important;
+}
+
+.ant-input:hover{
+    border-color : #DA0037 !important;
+    outline : none !important;
+
+}
+
+.ant-input:focus{
+    box-shadow: 0px 0px 5px #DA0037 !important;
+    outline : none !important;
+}
+
+
+.ant-upload-span{
+    font-size : 20px !important;
+}
+
+
+.group-submit-button{
+    background-color : #DA0037 !important;
+    color : white !important;
+    border-color : #DA0037 !important;
+    outline-color: green !important;
+    font-size : 25px !important;
+    padding : 0px !important;
+    height : 40px !important;
+    letter-spacing: 1px;
+}
+
+.group-submit-button:hover{
+    box-shadow: 0px 0px 8px gray;
+}
+
+.ant-upload-list-item-name{
+    color : #444444 !important;
+}
+
+.ant-upload-list-item{
+    border-color : lightgray !important;
+}

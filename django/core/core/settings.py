@@ -13,7 +13,7 @@ import os
 from pathlib import Path
 from decouple import config
 from decouple import config, Csv 
-
+import datetime
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -62,6 +62,9 @@ REST_USE_JWT = True
 JWT_AUTH_COOKIE = 'access'
 JWT_AUTH_REFRESH_COOKIE = 'refresh'
 
+SIMPLE_JWT = {
+    'BLACKLIST_AFTER_ROTATION': False,
+}
 
 
 CORS_ALLOW_CREDENTIALS = True
@@ -120,9 +123,11 @@ DATABASES = {
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
-    )
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
+    ],
+
+    
 }
 
 # Password validation
@@ -181,3 +186,7 @@ EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = '/static/'
+
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = '/media/'

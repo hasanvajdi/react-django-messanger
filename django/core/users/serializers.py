@@ -7,4 +7,5 @@ class EmailSerilizer(serializers.ModelSerializer):
     class Meta:
         model = SentEmail
         fields = "__all__"
-    
+
+

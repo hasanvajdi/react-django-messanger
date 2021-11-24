@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import {useHistory} from 'react-router-dom';
-import {Form, FormGroup, Label, Input,Container, Row, Col, Button} from 'reactstrap';
+import {Form, FormGroup, Label, Input,Container, Row, Col, Button, Alert } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import './../static/css/AcceptAccount.css';
@@ -8,31 +8,38 @@ import './../static/css/AcceptAccount.css';
 
 const AcceptAccount = (props)=>{
     const [email, setEmail] = useState();
+    const [success, setSuccess] = useState("none");
+    const [already, setAlready] = useState("none");
     const history = useHistory();
+
 
     const submitEmail = (e)=>{
         e.preventDefault()
-        var infor = {
-                    "user" : `${props.user.pk}`,
-                    "email" : `${email}`,
-                    "username" : `${props.user.username}`,
-                    "status" : false
-                }
-        infor = JSON.stringify(infor)
-        console.log("infor : ", infor)
+        if(email){
+            var infor = {
+                        "user" : `${props.user.pk}`,
+                        "email" : `${email}`,
+                        "username" : `${props.user.username}`,
+                        "status" : false
+                    }
+            infor = JSON.stringify(infor)
+            console.log("infor : ", infor)
 
-        axios.post("http://localhost:8000/email/send/",infor,{
-            headers : {
-                "Content-Type" : "application/json",
-            }
-        })
-        .then(res=>{
-            console.log(res)
-        })
-        .catch(err=>{
-            console.log(err)
-            window.alert("this user registered before")
-        })
+            axios.post("http://localhost:8000/email/send/",infor,{
+                headers : {
+                    "Content-Type" : "application/json",
+                }
+            })
+            .then(res=>{
+                setAlready("none")
+                setSuccess("flex")
+            })
+            .catch(err=>{
+                setSuccess("none")
+                setAlready("flex")
+
+            })
+        }
     }
 
 
@@ -45,7 +52,24 @@ const AcceptAccount = (props)=>{
                         <Col xs = "10" sm = "12" md = "12" lg = "12" className = "email-text-container">
                             <h2 className = "email-text">Email confirmation</h2>
                         </Col>
+                        <Col xs = "10" sm = "10" md = "10" lg = "10" className = "success-email-alert-col">
+                            <Alert color="success" className = "success-email-alert" style = {{display : `${success}`}}>
+                                <div>
+                                    we sent an email to : <span> {email}</span>
+                                </div>
+                            </Alert>
 
+                            <Alert color="danger" className = "success-email-alert" style = {{display : `${already}`}}>
+                                <div>
+                                    <ul>
+                                        <li>We have already sent an email to this account</li>
+                                        <li>might Email format may not be correct</li>
+                                    </ul>
+                                </div>
+                            </Alert>
+
+
+                        </Col>
                         <Col xs = "10" sm = "10" md = "10" lg = "10" className = "form-col" style = {{marginLeft :"auto", marginRight : "auto"}}>
                             <Form onSubmit = {submitEmail}>
                                 <FormGroup >

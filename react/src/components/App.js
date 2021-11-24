@@ -10,12 +10,14 @@ import AcceptAccount from './AcceptAccount';
 import Test from './Test';
 import UserCheck from './UserCheck';
 import AcceptEmail from './AcceptEmail';
+import Home from './Home';
 
 
 
 
 const App = (props)=>{
     const [user, setUser] = useState();
+
     return(
         <Suspense fallback = {<Spinner />}>
             <Router>
@@ -35,6 +37,11 @@ const App = (props)=>{
 
                     <Route path = "/AcceptEmail">
                         <AcceptEmail />
+                    </Route>
+
+                    <Route path = "/home">
+                        <UserCheck setUser = {setUser}/>
+                        <Home user = {user}/>
                     </Route>
 
                     <Route path = "/test">

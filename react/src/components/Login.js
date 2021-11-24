@@ -4,7 +4,7 @@ import Messanger from './../static/image/messanger.png'
 import { BsGithub, BsLinkedin, BsInstagram,
         BsTelegram, BsFillKeyFill } from "react-icons/bs";
 import {Link, useHistory} from 'react-router-dom'
-import {Form, FormGroup, Label, Input,Container, Row, Col, Button} from 'reactstrap';
+import {Form, FormGroup, Label, Input,Container, Row, Col, Button, Alert} from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
@@ -16,6 +16,7 @@ const Login = (props)=>{
     const cookies = new Cookies();
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
+    const [alertDisplay, setAlertDisplay] = useState("none")
     const history = useHistory();
 
     const submitLogin = (e)=>{
@@ -29,91 +30,112 @@ const Login = (props)=>{
             }
         })
 
-        .then(res=>{
-            cookies.set("access", `${res.data.access_token}`, { path: '/' })
-            cookies.set("refresh", `${res.data.refresh_token}`, { path: '/' })
-            console.log("history : " + history)
-            history.push("/AcceptAccount")
+        .then(reslogin=>{
+            cookies.set("access", `${reslogin.data.access_token}`, { path: '/' })
+            cookies.set("refresh", `${reslogin.data.refresh_token}`, { path: '/' })
+
+            axios.get(`http://127.0.0.1:8000/email/send/${reslogin.data.user.pk}/`)
+            .then(resultemail=>{
+                resultemail.data.status == true?history.push("/home"):history.push("/AcceptAccount")
+            })
+            .catch(err=>{
+                history.push("/AcceptAccount")
+            })
+
+
+        })
+        .catch(login_error=>{
+            setAlertDisplay("flex")
         })
     }
 
 
     return(
-        <Container className = "login-container" >
-            <Row style = {{height : "100%"}}>
-                <Col className = "right-side" xs = "12" sm = "12" md = "4" lg = "4">
-                    <img src = {Messanger} alt = "messanger icon" className = "messanger-pic"/>
-                    <div className = "messanger-cover">
-                        <h2 className = "login-text">login</h2>
+        <React.Fragment>
+            <Container className = "login-container" >
+                <Row style = {{height : "100%"}}>
+                    <Col className = "right-side" xs = "12" sm = "12" md = "4" lg = "4">
+                        <img src = {Messanger} alt = "messanger icon" className = "messanger-pic"/>
+                        <div className = "messanger-cover">
+                            <h2 className = "login-text">login</h2>
 
-                        <div className = "social-icons">
-                            <a href = "https://github.com/hasanvajdi"><BsGithub className = "icon" /></a>
-                            <a href = "https://www.linkedin.com/in/hasan-vajdi-34a860225/"><BsLinkedin className = "icon" /></a>
-                            <a href = "https://t.me/hasan_zltn9"><BsTelegram className = "icon" /></a>
-                            <a href = "https://www.instagram.com/hasan__vajdi/"><BsInstagram className = "icon" /></a>
+                            <div className = "social-icons">
+                                <a href = "https://github.com/hasanvajdi"><BsGithub className = "icon" /></a>
+                                <a href = "https://www.linkedin.com/in/hasan-vajdi-34a860225/"><BsLinkedin className = "icon" /></a>
+                                <a href = "https://t.me/hasan_zltn9"><BsTelegram className = "icon" /></a>
+                                <a href = "https://www.instagram.com/hasan__vajdi/"><BsInstagram className = "icon" /></a>
+                            </div>
                         </div>
-                    </div>
-                </Col>
+                    </Col>
 
-                <Col className = "form-container" xs = "12" sm = "12" md = "8" lg = "8">
-                    <Row className = "form-row">
-                        <Col xs = "10" md = "10" lg = "10" className = "login-col">
-                            <Form onSubmit = {submitLogin}>
-                                <FormGroup className = "login-formgroup">
-                                    <Label className = "login-label" for = "username">Username</Label>
-                                    <Input
-                                        name = "username"
-                                        id = "username"
-                                        type = "text"
-                                        placeholder = "Only letters adn underline are allowed"
-                                        className = "input username-input"
-                                        onChange = {(username)=>setUsername(username.target.value)}
-                                    />
-                                </FormGroup>
+                    <Col className = "form-container" xs = "12" sm = "12" md = "8" lg = "8">
+                        <Row className = "form-row">
+                            <Col xs = "10" md = "10" lg = "10" className = "login-col">
+                                <Form onSubmit = {submitLogin}>
+                                    <FormGroup className = "login-formgroup">
+                                        <Label className = "login-label" for = "username">Username</Label>
+                                        <Input
+                                            name = "username"
+                                            id = "username"
+                                            type = "text"
+                                            placeholder = "Only letters adn underline are allowed"
+                                            className = "input username-input"
+                                            onChange = {(username)=>{setUsername(username.target.value);setAlertDisplay("none")}}
+                                        />
+                                    </FormGroup>
 
-                                <FormGroup className = "login-formgroup">
-                                    <Label className = "login-label" for = "password">Password</Label>
-                                    <Input
-                                        name = "password"
-                                        id = "password"
-                                        type = "password"
-                                        placeholder = "write strong password"
-                                        className = "input username-input"
-                                        onChange = {(password)=>setPassword(password.target.value)}
+                                    <FormGroup className = "login-formgroup">
+                                        <Label className = "login-label" for = "password">Password</Label>
+                                        <Input
+                                            name = "password"
+                                            id = "password"
+                                            type = "password"
+                                            placeholder = "write strong password"
+                                            className = "input username-input"
+                                            onChange = {(password)=>{setPassword(password.target.value);setAlertDisplay("none")}}
 
-                                    />
-                                </FormGroup>
+                                        />
+                                    </FormGroup>
 
-                                <Row>
-                                    <Col xs = "5" sm = "4" md = "4" lg = "4">
-                                        <FormGroup  className = "" style = {{wordSpacing: "5px"}}>
-                                            <Input
-                                                name = "rememberme"
-                                                type = "checkbox"
+                                    <Row>
+                                        <Col xs = "5" sm = "4" md = "4" lg = "4">
+                                            <FormGroup  className = "" style = {{wordSpacing: "5px"}}>
+                                                <Input
+                                                    name = "rememberme"
+                                                    type = "checkbox"
 
-                                            />
-                                            <Label className = "remember-name">remember me</Label>
-                                        </FormGroup>
-                                    </Col>
+                                                />
+                                                <Label className = "remember-name">remember me</Label>
+                                            </FormGroup>
+                                        </Col>
 
-                                    <Col xs = "7" sm = "8" md = "8" lg = "8" className = "forgot-password">
-                                        <Link><span style = {{float : "right", color : "#171717"}}>I forgot my password</span></Link>
-                                        <BsFillKeyFill style = {{float : "right",  marginRight : "5px", marginTop : "5px"}}/>
-                                    </Col>
-                                </Row>
+                                        <Col xs = "7" sm = "8" md = "8" lg = "8" className = "forgot-password">
+                                            <Link><span style = {{float : "right", color : "#171717"}}>I forgot my password</span></Link>
+                                            <BsFillKeyFill style = {{float : "right",  marginRight : "5px", marginTop : "5px"}}/>
+                                        </Col>
+                                    </Row>
 
-                                <Row style = {{paddingBottom : "30px"}}>
-                                    <Col xs = "3" sm = "2" md = "2" lg = "2" ><Button className = "login-submit-form">Submit</Button></Col>
-                                    <Col xs = "8" sm = "9" md = "9" lg = "9" className = "or-signup" style = {{display : "flex", justifyContent : "flex-start", marginLeft : "20px"}}>
-                                        <div className = "or-signup-text">or <Link to = "/signup" style = {{textDecoration : "none"}}><span style = {{marginLeft : "5px", color : "#DA0037"}}>Sign up</span></Link></div>
-                                    </Col>
-                                </Row>
-                            </Form>
-                        </Col>
-                    </Row>
-                </Col>
-            </Row>
-        </Container>
+                                    <Row style = {{paddingBottom : "30px"}}>
+                                        <Col xs = "3" sm = "2" md = "2" lg = "2" ><Button className = "login-submit-form">Submit</Button></Col>
+                                        <Col xs = "8" sm = "9" md = "9" lg = "9" className = "or-signup" style = {{display : "flex", justifyContent : "flex-start", marginLeft : "20px"}}>
+                                            <div className = "or-signup-text">or <Link to = "/signup" style = {{textDecoration : "none"}}><span style = {{marginLeft : "5px", color : "#DA0037"}}>Sign up</span></Link></div>
+                                        </Col>
+                                    </Row>
+                                </Form>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+            </Container>
+
+            <Alert color="danger" className = "login-danger" style = {{display : `${alertDisplay}`}}>
+                <ul>
+                    <li>user {username} was not found!</li>
+                    <li>the password or name may be incorrect</li>
+                </ul>
+            </Alert>
+        </React.Fragment>
+
     )
 }
 

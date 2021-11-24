@@ -1,7 +1,6 @@
 
 
 .accept-container{
-    margin-top : 5%;
 }
 
 
@@ -33,7 +32,7 @@
 
 .form-col{
     height : auto;
-    margin-top : 80px;
+    margin-top : 30px;
 }
 
 
@@ -47,6 +46,18 @@
     margin-top : 30px;
 }
 
+.success-email-alert-col{
+    margin-left : auto !important;
+    margin-right : auto !important;
+    margin-top : 50px;
+}
+
+.success-email-alert{
+    letter-spacing: normal !important;
+    word-spacing: 4px !important;
+    font-size : 22px;
+
+}
 
 .form-control:focus{
     box-shadow: 0px 0px 5px #DA0037 !important;

@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from .serializers import EmailSerilizer
 from rest_framework import viewsets
 from rest_framework.response import Response
 from django.http import JsonResponse
@@ -10,7 +9,7 @@ socket.getaddrinfo('localhost', 8080)
 from django.template import Context
 from django.template.loader import get_template
 
-
+from .serializers import EmailSerilizer
 from .models import SentEmail
 
 
@@ -34,7 +33,6 @@ class EmailViewSet(viewsets.ModelViewSet):
             email = EmailMessage("confirmation", content, settings.DEFAULT_FROM_EMAIL, to=[request.data["email"]])
             email.content_subtype = 'html'
             email.send()
-
         return JsonResponse({"status" : "ok"})
 
 
@@ -48,4 +46,7 @@ class EmailViewSet(viewsets.ModelViewSet):
             return JsonResponse({"status" : "400"})
         
         return JsonResponse({"status" : "200"})
+
+
+
 

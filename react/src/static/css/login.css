@@ -12,6 +12,22 @@ body{
 }
 
 
+.form-control:focus{
+    box-shadow: 0px 0px 5px #DA0037 !important;
+    border-color : #DA0037 !important;
+}
+
+
+.login-danger{
+    width : 60% !important;
+    height : auto;
+    margin : 10px auto auto auto;
+    font-size : 20px;
+    letter-spacing: 0px !important;
+    word-spacing: 4px;
+}
+
+
 .login-container{
     width : 60% !important;
     height : auto;
@@ -94,10 +110,6 @@ body{
 }
 
 
-.input:focus{
-    border-color : #444444 !important;
-    box-shadow: 0px 0px 5px gray !important;
-}
 
 
 .input{

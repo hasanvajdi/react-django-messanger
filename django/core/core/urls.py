@@ -25,4 +25,5 @@ urlpatterns = [
 
     #apps
     path("email/", include("users.urls")),
+    path("chat/", include("chat.urls"))
 ]
