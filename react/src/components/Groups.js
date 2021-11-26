@@ -1,8 +1,12 @@
 import React, {useState} from 'react';
 import '../static/css/Groups.css';
 import {BsPlusLg} from "react-icons/bs";
-import {Modal, Form, Input, Upload, Button} from 'antd';
+import {Modal, Form, Input, Upload, Button, Image} from 'antd';
 import 'antd/dist/antd.css';
+import axios from 'axios';
+import Cookies from 'universal-cookie';
+
+
 
 function getBase64(file) {
   return new Promise((resolve, reject) => {
@@ -15,8 +19,13 @@ function getBase64(file) {
 
 
 const Groups = (props)=>{
+
     return(
         <React.Fragment>
+            <Image
+                width = {50}
+                
+            />
             <p className = "group-name">{props.group.name}</p>
         </React.Fragment>
 
@@ -26,13 +35,35 @@ const Groups = (props)=>{
 
 const GroupsModal = (props)=>{
     const [fileList, setFileList] = useState()
-    console.log("filelist :", fileList)
+    const cookies = new Cookies();
+
+
     const submitForm = (e)=>{
-        console.log(e)
+        if(e["name"]){
+            if(fileList.fileList){
+                e.avatar = fileList.fileList
+            }
+            console.log(fileList)
+            e.owner = props.user.pk
+            const access_token = cookies.get("access")
+            axios.post("http://127.0.0.1:8000/chat/groups/", e, {
+                header : {
+                    "Content-Type" : "multipart/form-data",
+                    "Authorization" : 'Bearer' + access_token,
+                }
+            })
+            .then(res_newgroup=>{
+                console.log("res_newgroup : ", res_newgroup)
+            })
+            .catch(err_newgroup=>{
+                console.log(err_newgroup.response)
+            })
+        }
+
     }
 
     const normFile=  (e)=>{
-        console.log("e : ", e)
+        console.log("normFile :", e)
     }
 
     const handlePreview = async file => {
@@ -47,7 +78,9 @@ const GroupsModal = (props)=>{
       </div>
     );
 
-    const handleChange = ({ fileList }) => setFileList({ fileList });
+    const handleChange = (image) => {
+        setFileList(image.file)
+    }
 
 
     return(
@@ -60,9 +93,9 @@ const GroupsModal = (props)=>{
             >
                 <Form.Item
                     className = "group-name-label"
-                    name = {"group-name"}
+                    name = "name"
                     rule = {[
-                        {required : true}
+                        {required : true,},
                     ]}
                 >
                     <Input placeholder = "enter group name" className = "group-name-input"/>
@@ -70,19 +103,18 @@ const GroupsModal = (props)=>{
 
 
                 <Form.Item
-                        name="dragger"
+                        name="avatar"
                         valuePropName="fileList"
                         getValueFromEvent={normFile}
                         className = "upload-input"
                 >
                     <Upload
-                            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                             listType="picture-card"
                             fileList={fileList}
                             onPreview={handlePreview}
                             onChange={handleChange}
                     >
-                            {fileList&&fileList.fileList.length == 1 ? null : uploadButton}
+                            {fileList ? null : uploadButton}
                     </Upload>
                 </Form.Item>
 

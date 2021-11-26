@@ -66,7 +66,7 @@ const Home = (props)=>{
                     </Col>
 
                     <Col lg = "10" className = "dialogs">
-                        <GroupsModal groupIsOpen = {groupIsOpen} setGroupIsOpen = {setGroupIsOpen}/>
+                        <GroupsModal user = {props.user} groupIsOpen = {groupIsOpen} setGroupIsOpen = {setGroupIsOpen}/>
 
 
                         {

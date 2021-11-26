@@ -27,6 +27,7 @@ class Profile(models.Model):
 ##########################################################################################
 
 
+
 def GroupAvatr(instance, filename):
     return f'group_avatar/{instance.group_id}_avatar'
 
@@ -43,7 +44,7 @@ class GroupStructure(models.Model):
     group_id    = models.CharField(max_length = 100, default = GroupIdCreator, unique=True, primary_key = True, editable=False)
     link        = models.CharField(max_length=100, default = GroupLinkCreator, unique=True, editable=False)
     name        = models.CharField(max_length = 50, blank = False, null = False)
-    avatar      = models.FileField(upload_to = GroupAvatr, blank = True, null = True)
+    avatar      = models.ImageField(upload_to = GroupAvatr, blank = True, null = True)
     biograhpy   = models.CharField(max_length = 400, blank = True, null = True)
     owner       = models.ForeignKey(User, on_delete = models.CASCADE, related_name = "group_owner")
     admins      = models.ManyToManyField(User, blank = True, null=True, related_name="group_admins", default=current_user)
