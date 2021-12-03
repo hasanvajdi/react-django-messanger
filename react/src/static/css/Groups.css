@@ -92,9 +92,50 @@
 }
 
 .ant-upload-list-item{
-    border-color : lightgray !important;
 }
 
 .ant-upload:hover{
     border-color : #DA0037 !important;
+}
+
+
+.group-avatar{
+    border-radius: 50%;
+    width : 37px !important;
+    height : 37px !important;
+}
+
+.ant-image-mask{
+    border-radius: 50%;
+    width : 37px !important;
+    height : 37px !important;
+}
+
+
+.select-group-avatar-label{
+    width : 100px;
+    height : 60px;
+    background-color : #EDEDED;
+    border-radius: 4px;
+    font-size : 20px !important;
+    text-align : center;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: column;
+    padding : 0px !important;
+    border : 1.9px dotted gray;
+    cursor : pointer;
+}
+
+
+.select-group-avatar-label:hover{
+    border-color : #DA0037;
+}
+
+
+.group-name-col{
+    overflow: hidden;
+    text-overflow: ellipsis !important;
+    cursor : pointer;
 }

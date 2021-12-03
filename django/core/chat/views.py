@@ -12,8 +12,8 @@ from django.http import JsonResponse
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework import status
-
-
+from core.settings import BASE_DIR
+import os
 
 
 from .serializers import *
@@ -33,7 +33,6 @@ class GroupStructureViewSet(viewsets.ModelViewSet):
     queryset = GroupStructure.objects.all()
 
     def list(self, request):
-        print("user : ", request.user)
         queryset = GroupStructure.objects.filter(owner = request.user)
         serializer = GroupStructureSerializer(queryset, many=True)
         return Response(serializer.data)
@@ -56,3 +55,17 @@ class GroupStructureViewSet(viewsets.ModelViewSet):
 class ChannelStructureViewSet(viewsets.ModelViewSet):
     queryset = ChannelStructure.objects.all()
     serializer_class = ChannelStructureSerializer
+
+
+    def list(self, request):
+        queryset = ChannelStructure.objects.filter(owner = request.user)
+        serializer = ChannelStructureSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+    def create(self, request):
+        a = super().create(request)
+        add_member = ChannelStructure.objects.filter(channel_id = a.data["channel_id"])[0]
+        add_member.members.add(add_member.owner)
+        return Response(status=status.HTTP_201_CREATED)
+

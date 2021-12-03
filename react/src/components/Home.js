@@ -6,7 +6,11 @@ import { BsTextLeft, BsFillPersonFill, BsFillPeopleFill, BsMegaphoneFill, BsPlus
 import { AiFillRobot } from "react-icons/ai";
 import axios from 'axios';
 import Cookies from 'universal-cookie';
-import {Groups, GroupsModal} from './Groups'
+
+
+import {Groups, GroupsModal} from './chats/Groups';
+import {Channels, ChannelsModal} from './chats/Channels';
+
 
 
 const Home = (props)=>{
@@ -14,8 +18,28 @@ const Home = (props)=>{
     const [chats, setChats] = useState();
     const [type, setType] = useState();
     const [groupIsOpen, setGroupIsOpen] = useState(false)
+    const [channelIsOpen, setChannelIsOpen] = useState(false)
 
 
+    const ChannelChats = ()=>{
+        setType("channel")
+
+        let access_token = cookies.get("access");
+            axios.get("http://127.0.0.1:8000/chat/channels/",{
+                headers : {
+                        "Authorization": 'Bearer ' + access_token,
+                    }
+            })
+            .then(res=>{
+                setChats(res.data)
+                setType("channel")
+            })
+            .catch(err=>{
+                console.log("channel eroror")
+                console.log(err.response)
+            })
+
+    }
 
     const GroupsChats = ()=>{
         let access_token = cookies.get("access");
@@ -34,9 +58,16 @@ const Home = (props)=>{
     }
 
 
-    const createNewGroup = ()=>{
-        setGroupIsOpen(true)
+    const createNewGroupChannel = ()=>{
+        if (type == "group"){
+            setGroupIsOpen(true)
+        }
+        else if (type == "channel"){
+            setChannelIsOpen(true   )
+        }
     }
+
+
 
     return(
         <Container className = "main-chat-container" fluid>
@@ -61,28 +92,38 @@ const Home = (props)=>{
 
                         <BsFillPersonFill id = "private-tooltip" className = "category-icon"/>
                         <BsFillPeopleFill id = "group-tooltip" className = "category-icon" onClick={GroupsChats}/>
-                        <BsMegaphoneFill id = "channel-tooltip" className = "category-icon"/>
+                        <BsMegaphoneFill id = "channel-tooltip" className = "category-icon" onClick={ChannelChats}/>
                         <AiFillRobot id = "robot-tooltip" className = "category-icon"/>
                     </Col>
 
                     <Col lg = "10" className = "dialogs">
-                        <GroupsModal user = {props.user} groupIsOpen = {groupIsOpen} setGroupIsOpen = {setGroupIsOpen}/>
+                            {
+                                type === "channel" && <ChannelsModal setChats = {setChats} user = {props.user} channelIsOpen = {channelIsOpen} setChannelIsOpen = {setChannelIsOpen}/>
+                                || type === "group" && <GroupsModal setChats = {setChats} user = {props.user} groupIsOpen = {groupIsOpen} setGroupIsOpen = {setGroupIsOpen}/>
+
+                            }
 
 
-                        {
-                            type ? (type == "privates"?(<p>start new chat</p>):(<p className = "plus-news-group-channel" onClick = {createNewGroup}>
-                                                                                    <BsPlusLg style = {{color : "#444444;", fontSize : "17px"}}/>
-                                                                                    <span className = "new-group-channel">create new {type}
-                                                                                    </span>
-                                                                                </p>))
-                                                                                : ('')
 
-                        }
-                        {
-                            chats && chats.map((item, key)=>{
-                                return <Groups group = {item}/>
-                            })
-                        }
+
+                            {
+                                type ? (type == "privates"?(<p>start new chat</p>):(<p className = "plus-news-group-channel" onClick = {createNewGroupChannel}>
+                                                                                        <BsPlusLg style = {{color : "#444444;", fontSize : "17px"}}/>
+                                                                                        <span className = "new-group-channel">create new {type}
+                                                                                        </span>
+                                                                                    </p>))
+                                                                                    : (null)
+
+                            }
+
+                            <div >
+                                {
+                                    chats && chats.map((item, key)=>{
+                                        return type === "group" && <Groups group={item} key={key} />||
+                                        type === "channel" && <Channels channel={item} key={key} />
+                                    })
+                                }
+                            </div>
                     </Col>
                 </Row>
 
