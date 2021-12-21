@@ -47,12 +47,12 @@ const AcceptAccount = (props)=>{
     return(
         <Container className = "accept-container">
             <Row>
-                <Col xs = "8" sm = "8" md = "5" lg = "4"  className = "email-form-container">
+                <Col xs="8" sm="8" md="5" lg="4"  className = "email-form-container">
                     <Row>
-                        <Col xs = "10" sm = "12" md = "12" lg = "12" className = "email-text-container">
+                        <Col xs="10" sm="12" md="12" lg="12" className="email-text-container">
                             <h2 className = "email-text">Email confirmation</h2>
                         </Col>
-                        <Col xs = "10" sm = "10" md = "10" lg = "10" className = "success-email-alert-col">
+                        <Col xs="10" sm="10" md="10" lg="10" className="success-email-alert-col">
                             <Alert color="success" className = "success-email-alert" style = {{display : `${success}`}}>
                                 <div>
                                     we sent an email to : <span> {email}</span>
@@ -70,7 +70,7 @@ const AcceptAccount = (props)=>{
 
 
                         </Col>
-                        <Col xs = "10" sm = "10" md = "10" lg = "10" className = "form-col" style = {{marginLeft :"auto", marginRight : "auto"}}>
+                        <Col xs="10" sm="10" md="10" lg="10" className="form-col" style = {{marginLeft :"auto", marginRight : "auto"}}>
                             <Form onSubmit = {submitEmail}>
                                 <FormGroup >
                                     <Input

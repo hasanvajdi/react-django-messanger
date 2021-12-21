@@ -7,9 +7,11 @@ from django.conf import settings
 router = routers.SimpleRouter()
 
 
+router.register("users", UserViewSet, basename = "users")
 router.register("profile", ProfileViewSet, basename = "profile")
 router.register("groups", GroupStructureViewSet, basename = "group")
 router.register("channels", ChannelStructureViewSet, basename = "channel")
+
 
 urlpatterns = router.urls
 

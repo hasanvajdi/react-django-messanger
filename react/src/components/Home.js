@@ -10,6 +10,8 @@ import Cookies from 'universal-cookie';
 
 import {Groups, GroupsModal} from './chats/Groups';
 import {Channels, ChannelsModal} from './chats/Channels';
+import {Privates, PrivatesModal} from './chats/Privates';
+import ChatBox from './ChatBox';
 
 
 
@@ -17,29 +19,12 @@ const Home = (props)=>{
     const cookies = new Cookies();
     const [chats, setChats] = useState();
     const [type, setType] = useState();
+
     const [groupIsOpen, setGroupIsOpen] = useState(false)
     const [channelIsOpen, setChannelIsOpen] = useState(false)
+    const [privateIsOpen, setPrivateIsOpen] = useState(false)
+    const [selectedChat, setSelectedChat] = useState();
 
-
-    const ChannelChats = ()=>{
-        setType("channel")
-
-        let access_token = cookies.get("access");
-            axios.get("http://127.0.0.1:8000/chat/channels/",{
-                headers : {
-                        "Authorization": 'Bearer ' + access_token,
-                    }
-            })
-            .then(res=>{
-                setChats(res.data)
-                setType("channel")
-            })
-            .catch(err=>{
-                console.log("channel eroror")
-                console.log(err.response)
-            })
-
-    }
 
     const GroupsChats = ()=>{
         let access_token = cookies.get("access");
@@ -56,8 +41,43 @@ const Home = (props)=>{
             console.log("errrrrror")
         })
     }
+    const ChannelChats = ()=>{
+        setType("channel")
+        let access_token = cookies.get("access");
+            axios.get("http://127.0.0.1:8000/chat/channels/",{
+                headers : {
+                        "Authorization": 'Bearer ' + access_token,
+                    }
+            })
+            .then(res=>{
+                setChats(res.data)
+            })
+            .catch(err=>{
+                console.log("channel eroror")
+                console.log(err.response)
+            })
 
+    }
+    const PrivateChats = ()=>{
+        setType("private")
+        console.log("private type")
 
+        let access_token = cookies.get("access");
+
+        axios.get("http://127.0.0.1:8000/chat/users/",{
+            headers : {
+                    "Authorization": 'Bearer ' + access_token,
+                }
+        })
+        .then(res=>{
+            setChats(res.data)
+            setType("private")
+        })
+        .catch(err=>{
+            console.log("channel eroror")
+            console.log(err.response)
+        })
+    }
     const createNewGroupChannel = ()=>{
         if (type == "group"){
             setGroupIsOpen(true)
@@ -65,9 +85,37 @@ const Home = (props)=>{
         else if (type == "channel"){
             setChannelIsOpen(true   )
         }
+        else if (type === "private"){
+            setPrivateIsOpen(true)
+        }
     }
 
 
+    const selectedChatFunc = (chat)=>{
+        var selectedChatUrl=null
+        if(type === "private"){
+            selectedChatUrl = `http://localhost:8000/chat/users/${chat}/`
+        }else{selectedChatUrl = `http://localhost:8000/chat/${type}/${chat}/`}
+
+        let access_token = cookies.get("access")
+        axios.get(selectedChatUrl, {
+            headers : {
+                "Authorization": 'Bearer ' + access_token,
+            }
+        })
+        .then(res_selectedchat=>{
+            //getting user profile to showing in chat box
+            axios.get(`http://localhost:8000/chat/profile/${res_selectedchat.data.id}/`,{
+                headers : {
+                    "Authorization": 'Bearer ' + access_token,
+                }
+            })
+            .then(res_selectedprofile=>{
+                console.log(res_selectedprofile.data)
+                setSelectedChat(res_selectedprofile.data);
+            })
+        })
+    }
 
     return(
         <Container className = "main-chat-container" fluid>
@@ -79,7 +127,7 @@ const Home = (props)=>{
                     <div className = "header-divider"></div>
                     <Col lg = "9" className = "header-username-col">
                         <UncontrolledTooltip placement="top"target="your-username">your username</UncontrolledTooltip>
-                        <BsFillPersonCheckFill id = "your-username" style = {{fontSize : "25px"}}/> <span style = {{fontSize : "24px", marginLeft : "3px"}}></span>
+                        <BsFillPersonCheckFill id = "your-username" style = {{fontSize : "25px"}}/> <span style = {{fontSize : "24px", marginLeft : "8px"}}>{props.user && props.user.username}</span>
                     </Col>
                 </Row>
 
@@ -90,7 +138,7 @@ const Home = (props)=>{
                         <UncontrolledTooltip placement="top"target="channel-tooltip">channels</UncontrolledTooltip>
                         <UncontrolledTooltip placement="top"target="robot-tooltip">bots</UncontrolledTooltip>
 
-                        <BsFillPersonFill id = "private-tooltip" className = "category-icon"/>
+                        <BsFillPersonFill id = "private-tooltip" className = "category-icon" onClick={PrivateChats}/>
                         <BsFillPeopleFill id = "group-tooltip" className = "category-icon" onClick={GroupsChats}/>
                         <BsMegaphoneFill id = "channel-tooltip" className = "category-icon" onClick={ChannelChats}/>
                         <AiFillRobot id = "robot-tooltip" className = "category-icon"/>
@@ -100,27 +148,28 @@ const Home = (props)=>{
                             {
                                 type === "channel" && <ChannelsModal setChats = {setChats} user = {props.user} channelIsOpen = {channelIsOpen} setChannelIsOpen = {setChannelIsOpen}/>
                                 || type === "group" && <GroupsModal setChats = {setChats} user = {props.user} groupIsOpen = {groupIsOpen} setGroupIsOpen = {setGroupIsOpen}/>
+                                || type === "private" && <PrivatesModal privateIsOpen={privateIsOpen} setPrivateIsOpen={setPrivateIsOpen} />
 
                             }
-
-
-
 
                             {
-                                type ? (type == "privates"?(<p>start new chat</p>):(<p className = "plus-news-group-channel" onClick = {createNewGroupChannel}>
-                                                                                        <BsPlusLg style = {{color : "#444444;", fontSize : "17px"}}/>
-                                                                                        <span className = "new-group-channel">create new {type}
-                                                                                        </span>
-                                                                                    </p>))
-                                                                                    : (null)
+                                type ?
+                                (type === "private"?(<p onClick={createNewGroupChannel} className = "new-group-channel"> <BsPlusLg style = {{color : "#444444;", fontSize : "17px"}}/> start new chat</p>)
+                                :(<p className = "plus-news-group-channel" onClick = {createNewGroupChannel}>
+                                        <BsPlusLg style = {{color : "#444444;", fontSize : "17px"}}/>
+                                        <span className = "new-group-channel">create new {type}</span>
+                                    </p>
+                                ))
+                                : (null)
 
                             }
 
-                            <div >
+                            <div>
                                 {
                                     chats && chats.map((item, key)=>{
-                                        return type === "group" && <Groups group={item} key={key} />||
-                                        type === "channel" && <Channels channel={item} key={key} />
+                                        return type === "group" && <Groups setSelectedChat={setSelectedChat} group={item} key={item.group_id}  />||
+                                        type === "channel" && <Channels setSelectedChat={setSelectedChat} channel={item} key={item.channel_id}  /> ||
+                                        type === "private" && <Privates setSelectedChat={selectedChatFunc} private={item} key={item.id} />
                                     })
                                 }
                             </div>
@@ -131,6 +180,9 @@ const Home = (props)=>{
 
 
             <Row className = "chat-box">
+                {
+                    selectedChat && <ChatBox selectedChat = {selectedChat} />
+                }
 
             </Row>
 

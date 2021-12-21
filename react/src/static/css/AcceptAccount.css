@@ -1,6 +1,5 @@
-
-
-.accept-container{
+.email-text-container{
+    height: 90px;
 }
 
 
@@ -32,7 +31,7 @@
 
 .form-col{
     height : auto;
-    margin-top : 30px;
+    margin-top : 10px;
 }
 
 
@@ -90,6 +89,7 @@
     .email-text-container{
         margin-left : auto;
         margin-right : auto;
+
     }
 
     .email-text{

@@ -1,0 +1,43 @@
+.ant-input{
+    height : 45px;
+    font-size : 22px;
+    width : 435px !important;
+
+}
+
+.ant-input-search-button{
+    height : 45px;
+    font-size : 50px;
+    width : 40px
+}
+
+
+.ant-input:focus{
+    outline : none !important;
+    box-shadow: none !important;
+}
+
+.ant-input:focus,.ant-input { outline: none !important; }
+
+.ant-input:hover{
+    border-color : #d9d9d9 !important;
+    box-shadow: none !important;
+    outline : none !important;
+    outline-color: yellow !important;
+}
+
+
+.ant-input-search-button:hover{
+    border-color : #d9d9d9;
+}
+
+
+.ant-input-search-button:visited{
+    box-shadow: none !important;
+}
+
+
+.ant-input-search-button:hover > *{
+    transition : 0.5s;
+    color : #DA0037;
+}

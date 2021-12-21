@@ -20,11 +20,12 @@
 .header-row{
     width : 100%;
     height : 10%;
-    background-color : lightgray;
+    background-color : #dfdfdf;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
     align-items: center;
     padding : 0px !important;
+    box-shadow: 0px 0px 5px lightgray;
 }
 
 .header-icon-col{
@@ -62,16 +63,18 @@
 .chat-box{
     width : 48%;
     height : 100%;
-    background-color : lightgray;
+    background-color : #dfdfdf;
     margin-left : 0%;
+    box-shadow: 0px 0px 5px lightgray;
 }
 
 
 .imoji{
     width : 30%;
     height : 100%;
-    background-color : lightgray;
+    background-color : #dfdfdf;
     margin-left : 4%;
+    box-shadow: 0px 0px 5px lightgray;
 }
 
 
@@ -79,11 +82,13 @@
     height : 90%;
     width : 100%;
     padding : 0px !important;
-    background-color : lightgray;
+    background-color : #dfdfdf;
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
     border-top : 1px solid gray;
-    }
+    box-shadow: 0px 5px 10px lightgray;
+
+}
 
 
 .categorys{

@@ -38,6 +38,7 @@ class EmailViewSet(viewsets.ModelViewSet):
 
 
     def partial_update(self, request, pk=None):
+        print("pk:", pk)
         obj = SentEmail.objects.filter(uuid = pk)[0]
         if obj.status == False:
             obj.status = True

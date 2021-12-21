@@ -29,7 +29,6 @@ class Profile(models.Model):
 
 
 def GroupAvatr(instance, filename):
-    
     return f'group_avatar/{instance.group_id}_avatar.jpg'
 
 def GroupIdCreator():
@@ -52,18 +51,12 @@ class GroupStructure(models.Model):
     members     = models.ManyToManyField(User, blank=True, null=True, related_name="group_members", default=current_user)
 
 
-
-
-   
-    
-
-
-
 ##########################################################################################
 ##########################################################################################
 ##########################################################################################
 ##########################################################################################
 ##########################################################################################
+
 
 
 def ChannelAvatr(instance, filename):
