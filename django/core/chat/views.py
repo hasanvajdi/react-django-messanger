@@ -12,7 +12,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from core.settings import BASE_DIR
 import os, socket
-socket.getaddrinfo('localhost', 8080)
+socket.getaddrinfo('localhost', 8000)
 
 
 from .serializers import *

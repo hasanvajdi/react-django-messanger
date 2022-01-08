@@ -1,12 +1,32 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Row, Col, Image, Form, Input} from 'antd';
 import './../static/css/ChatBox.css';
 import { AiFillPhone, AiOutlineMore, AiOutlinePaperClip, AiOutlineSend } from "react-icons/ai";
-
+import Cookies from 'universal-cookie';
 
 
 const ChatBox = (props)=>{
-    console.log(props.selectedChat)
+    const messageTextRef = useRef();
+    let cookies =  new Cookies();
+
+    const sendMessage = (e)=>{
+        console.log("chat", props.chatSocket)
+
+        if(props.chatSocket) {props.chatSocket.onmessage = message=>{
+            console.log("onmessage28 :", JSON.parse(message.data))
+        }}
+        var message_text = messageTextRef.current.state.value
+
+        props.chatSocket.send(JSON.stringify(
+                {
+                    'message' : message_text,
+                    'user' : props.selectedChat.id
+                }
+            )
+        );
+
+}
+
     return(
         <React.Fragment>
             <Col className="chat-box-header">
@@ -40,9 +60,9 @@ const ChatBox = (props)=>{
                         <AiOutlinePaperClip />
                     </Col>
                     <Col  className="footer-input-col" md={20}>
-                        <Input className="footer-input-input" />
+                        <Input className="footer-input-input" ref={messageTextRef}/>
                     </Col>
-                    <Col  className="footer-send-col" md={2}>
+                    <Col  className="footer-send-col" md={2} onClick={sendMessage}>
                         <AiOutlineSend />
                     </Col>
                 </Row>

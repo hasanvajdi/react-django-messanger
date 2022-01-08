@@ -20,6 +20,7 @@ const Home = (props)=>{
     const [chats, setChats] = useState();
     const [type, setType] = useState();
 
+    const [chatSocket, setChatSocket] = useState();
     const [groupIsOpen, setGroupIsOpen] = useState(false)
     const [channelIsOpen, setChannelIsOpen] = useState(false)
     const [privateIsOpen, setPrivateIsOpen] = useState(false)
@@ -36,11 +37,14 @@ const Home = (props)=>{
         .then(res=>{
             setChats(res.data)
             setType("group")
+            var chatSocket = new WebSocket(`ws://localhost:8000/ws/chat/?${props.user.pk}`);
+            setChatSocket(chatSocket)
         })
         .catch(err=>{
             console.log("errrrrror")
         })
     }
+
     const ChannelChats = ()=>{
         setType("channel")
         let access_token = cookies.get("access");
@@ -51,6 +55,8 @@ const Home = (props)=>{
             })
             .then(res=>{
                 setChats(res.data)
+                var chatSocket = new WebSocket(`ws://localhost:8000/ws/chat/?${props.user.pk}`);
+                setChatSocket(chatSocket)
             })
             .catch(err=>{
                 console.log("channel eroror")
@@ -60,10 +66,7 @@ const Home = (props)=>{
     }
     const PrivateChats = ()=>{
         setType("private")
-        console.log("private type")
-
         let access_token = cookies.get("access");
-
         axios.get("http://127.0.0.1:8000/chat/users/",{
             headers : {
                     "Authorization": 'Bearer ' + access_token,
@@ -72,9 +75,11 @@ const Home = (props)=>{
         .then(res=>{
             setChats(res.data)
             setType("private")
+            var chatSocket = new WebSocket(`ws://localhost:8000/ws/chat/?${props.user.pk}`);
+            setChatSocket(chatSocket)
         })
         .catch(err=>{
-            console.log("channel eroror")
+            console.log("private eroror")
             console.log(err.response)
         })
     }
@@ -89,8 +94,6 @@ const Home = (props)=>{
             setPrivateIsOpen(true)
         }
     }
-
-
     const selectedChatFunc = (chat)=>{
         var selectedChatUrl=null
         if(type === "private"){
@@ -181,7 +184,10 @@ const Home = (props)=>{
 
             <Row className = "chat-box">
                 {
-                    selectedChat && <ChatBox selectedChat = {selectedChat} />
+                    selectedChat && <ChatBox selectedChat={selectedChat}
+                                             user={props.user}
+                                             chatSocket={chatSocket}
+                                    />
                 }
 
             </Row>
