@@ -1,31 +1,52 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Row, Col, Image, Form, Input} from 'antd';
 import './../static/css/ChatBox.css';
 import { AiFillPhone, AiOutlineMore, AiOutlinePaperClip, AiOutlineSend } from "react-icons/ai";
 import Cookies from 'universal-cookie';
+import axios from 'axios';
+
+
+import MessageFormat from './MessageFormat';
+
 
 
 const ChatBox = (props)=>{
     const messageTextRef = useRef();
     let cookies =  new Cookies();
 
+    const [messages, setMessages] = useState([]);
+
+    // getting a list of messages, if any
+    useEffect(()=>{
+        axios.get(`http://127.0.0.1:8000/chat/messages/?one=${props.user.pk}&two=${props.selectedChat.user.id}`)
+        .then((resultGetMessages)=>{
+            setMessages(resultGetMessages.data)
+            console.log(resultGetMessages.data)
+        })
+        .catch((errorGetMessages)=>{
+            console.log("get messages error : ", errorGetMessages)
+        })
+    },[])
+
+    if(props.chatSocket) {props.chatSocket.onmessage = message=>{
+        setMessages([...messages, JSON.parse(message.data)])
+    }}
+
     const sendMessage = (e)=>{
-        console.log("chat", props.chatSocket)
-
-        if(props.chatSocket) {props.chatSocket.onmessage = message=>{
-            console.log("onmessage28 :", JSON.parse(message.data))
-        }}
-        var message_text = messageTextRef.current.state.value
-
+        var messageText = messageTextRef.current.state.value
+        var today = new Date();
+        var currentTime = `${today.getHours()}:${today.getMinutes()}`
+        setMessages([...messages, {"text":messageText, "time":currentTime,                     'user' : props.user.pk
+}])
         props.chatSocket.send(JSON.stringify(
                 {
-                    'message' : message_text,
-                    'user' : props.selectedChat.id
+                    'text' : messageText,
+                    'from' : props.user.pk,
+                    'to'   : props.selectedChat.id,
                 }
             )
         );
-
-}
+    }
 
     return(
         <React.Fragment>
@@ -53,7 +74,18 @@ const ChatBox = (props)=>{
                 </Row>
             </Col>
 
-            <Col className = "chat-box-messages"></Col>
+            <Col className = "chat-box-messages">
+                {messages && messages.map((message, key)=>{
+                    return <div
+                                key={key}
+                                className={message.user==props.user.pk ? "right-side-message" : "left-side-message"}
+                            >
+                                <p>{message.text}</p>
+                            </div>
+                })}
+            </Col>
+
+
             <Col className="chat-box-footer">
                 <Row className="footer-content">
                     <Col  className="footer-embed-col"  md={2}>

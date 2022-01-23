@@ -64,6 +64,7 @@ const Home = (props)=>{
             })
 
     }
+
     const PrivateChats = ()=>{
         setType("private")
         let access_token = cookies.get("access");
@@ -77,6 +78,7 @@ const Home = (props)=>{
             setType("private")
             var chatSocket = new WebSocket(`ws://localhost:8000/ws/chat/?${props.user.pk}`);
             setChatSocket(chatSocket)
+
         })
         .catch(err=>{
             console.log("private eroror")
@@ -114,7 +116,8 @@ const Home = (props)=>{
                 }
             })
             .then(res_selectedprofile=>{
-                console.log(res_selectedprofile.data)
+                console.log("res ", res_selectedprofile.data)
+                console.log("user : ", props.user)
                 setSelectedChat(res_selectedprofile.data);
             })
         })

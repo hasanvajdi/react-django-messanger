@@ -5,28 +5,48 @@ import random
 import string
 
 
-def current_user():
+############          Generall Section          ############
+
+class Message(models.Model):
+    user            = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    text            = models.TextField()
+    date            = models.DateTimeField(auto_now_add=True, editable=False)
+    edited          = models.BooleanField(default=False)
+    pinned          = models.BooleanField(default=False)
+
+
+##########################################################################################
+
+
+
+
+############          Private Section          ############
+
+def currentUser():
     return [instance.user]
 
-def profile_avatar(instance, filename):
+def profileAvatar(instance, filename):
     return f'profile_avatar/{instance.user.id}_avatar.jpg'
     
 class Profile(models.Model):
     user        = models.OneToOneField(User, on_delete = models.CASCADE)
     email       = models.EmailField(blank = True, null = True)
-    avatar      = models.FileField(upload_to = profile_avatar, blank = True, null = True)
+    avatar      = models.FileField(upload_to = profileAvatar, blank = True, null = True)
     biograhpy   = models.CharField(max_length = 100, blank = True, null = False)
     last_seen   = models.DateTimeField(editable = False, auto_now = True)
 
 
+class PrivateMessage(models.Model):
+    user_one     = models.ForeignKey(User, on_delete=models.CASCADE, related_name="from_user")
+    user_two     = models.ForeignKey(User, on_delete=models.CASCADE, related_name="to_user")
+    messages      = models.ManyToManyField(Message, blank=True, null=True)
 
 ##########################################################################################
-##########################################################################################
-##########################################################################################
-##########################################################################################
-##########################################################################################
 
 
+
+
+############          Group Section          ############
 
 def GroupAvatr(instance, filename):
     return f'group_avatar/{instance.group_id}_avatar.jpg'
@@ -47,17 +67,15 @@ class GroupStructure(models.Model):
     avatar      = models.ImageField(upload_to = GroupAvatr, blank = True, null = True, max_length = 500)
     biograhpy   = models.CharField(max_length = 400, blank = True, null = True)
     owner       = models.ForeignKey(User, on_delete = models.CASCADE, related_name = "group_owner")
-    admins      = models.ManyToManyField(User, blank = True, null=True, related_name="group_admins", default=current_user)
-    members     = models.ManyToManyField(User, blank=True, null=True, related_name="group_members", default=current_user)
+    admins      = models.ManyToManyField(User, blank = True, null=True, related_name="group_admins", default=currentUser)
+    members     = models.ManyToManyField(User, blank=True, null=True, related_name="group_members", default=currentUser)
 
-
-##########################################################################################
-##########################################################################################
-##########################################################################################
-##########################################################################################
 ##########################################################################################
 
 
+
+
+############          Channel Section          ############
 
 def ChannelAvatr(instance, filename):
     return f'channel_avatr/{instance.channel_id}_avatar.jpg'
@@ -78,4 +96,5 @@ class ChannelStructure(models.Model):
     admins      = models.ManyToManyField(User, blank=True, related_name="channel_admins")
     members     = models.ManyToManyField(User, blank=True, related_name="channel_members")
 
+##########################################################################################
 
