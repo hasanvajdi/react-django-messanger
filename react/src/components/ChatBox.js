@@ -49,10 +49,13 @@ const ChatBox = (props)=>{
     }}
 
     const sendMessage = (e)=>{
+        console.log(e.type)
+        console.log(e.key)
         if(e.type==="click" || e.key==="Enter"){
             var messageText = messageTextRef.current.state.value
-            messageTextRef.current.state.value = ""
-            props.chatSocket.send(JSON.stringify(
+            if(messageText.length > 0){
+                messageTextRef.current.state.value = ""
+                props.chatSocket.send(JSON.stringify(
                     {
                         'text' : messageText,
                         'from' : props.user.pk,
@@ -60,6 +63,7 @@ const ChatBox = (props)=>{
                     }
                 )
             );
+            }
         }
 
     }
