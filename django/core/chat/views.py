@@ -28,7 +28,6 @@ class UserViewSet(viewsets.ModelViewSet):
     search_fields = ['^username']
 
 
-
 class GroupStructureViewSet(viewsets.ModelViewSet):
     serializer_class = GroupStructureSerializer
     queryset = GroupStructure.objects.all()
@@ -43,7 +42,6 @@ class GroupStructureViewSet(viewsets.ModelViewSet):
         add_member = GroupStructure.objects.filter(group_id = a.data["group_id"])[0]
         add_member.members.add(add_member.owner)
         return Response(status=status.HTTP_201_CREATED)
-
 
 
 class ChannelStructureViewSet(viewsets.ModelViewSet):
@@ -62,7 +60,6 @@ class ChannelStructureViewSet(viewsets.ModelViewSet):
         return Response(status=status.HTTP_201_CREATED)
 
 
-
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
@@ -70,16 +67,19 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
 class MessageViewSet(viewsets.ModelViewSet):
     serializer_class = MessageSerializer
+    queryset = Message.objects.all()
 
-    def get_queryset(self):
-        user_one = self.request.query_params.get("one")
-        user_two = self.request.query_params.get("two")
+    def list(self, request):
+        user_one = request.query_params.get("one")
+        user_two = request.query_params.get("two")
         queryset = PrivateMessage.objects.filter(user_one=user_one, user_two=user_two)
 
         if len(queryset) == 0:
             queryset = PrivateMessage.objects.filter(user_one=user_two, user_two=user_one)
             if not queryset:
-                raise ValueError("No message here yet")
-        return queryset[0].messages.all().order_by("date")
+                return Response("No message here yet")
+                
+        serializer = MessageSerializer(queryset[0].messages.all().order_by("date"), many=True)
+        return Response(serializer.data)
         
     

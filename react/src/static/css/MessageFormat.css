@@ -1,0 +1,121 @@
+.right-side-message{
+    text-align : right;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.right-side-message > *{
+    background-color : #edfcdd;
+    width : auto !important;
+    height:auto;
+    max-width: 270px !important;
+    min-width : 90px;
+    padding : 10px;
+    border-radius: 5px;
+}
+
+.left-side-message > *{
+    background-color : pink;
+    width : auto !important;
+    height:auto;
+    max-width: 270px !important;    padding : 10px;
+    border-radius: 5px;
+}
+
+
+.message-col{
+    margin-top : 10px;
+}
+
+
+.message-time{
+    width : 100%;
+    text-align : left;
+    letter-spacing: 0px !important;
+    word-spacing: 0px !important;
+    font-size : 17px;
+}
+
+
+.message-text{
+    font-size : 19px;
+    text-overflow: ellipsis;
+}
+
+.message-self-col>*{
+    word-spacing: 0px !important;
+    letter-spacing: 0px !important;
+}
+
+.ant-popover-inner-content{
+    padding : 0px !important;
+
+}
+
+.message-menu-content{
+    font-size : 20px;
+    word-spacing: 2px !important;
+    letter-spacing: 0px !important;
+}
+
+.message-menu-option>div{
+    padding : 8px 25px 8px 10px;
+}
+
+.message-menu-option:hover{
+    width : 100% !important;
+    background-color : #EEEEEE;
+    cursor : pointer;
+}
+
+.message-menu-icon{
+    padding-right : 7px;
+}
+
+
+.ant-message-notice-content{
+    font-size : 22px;
+    word-spacing: 2px !important;
+    letter-spacing: 0px !important;
+}
+
+
+.edit-footer-buton:hover{
+    border-color : #d9d9d9 !important;
+    color : #8e8e8e !important;
+}
+
+.sumbit-edit-btn{
+    background-color : #575757 !important;
+    color : white !important;
+    font-size : 22px;
+    padding : 5px 20px 35px 20px !important;
+    border-radius : 4px;
+}
+
+.sumbit-edit-btn:focus{
+    border-color : #575757 !important;
+    color : white !important;
+}
+
+.submit-edit-btn:hover{
+    color : white !important;
+}
+
+
+.cancel-edit-btn{
+    font-size : 22px;
+    padding : 5px 15px 35px 15px !important;
+    border-radius : 4px;
+}
+
+.cancel-edit-btn:hover{
+    border-color : #da2b57 !important;
+    color : #da2b57 !important;
+}
+
+.cancel-edit-btn:focus{
+    border-color : #da2b57 !important;
+    color : #da2b57 !important;
+}
+/* */

@@ -106,22 +106,21 @@ body{
     font-size : 30px;
 }
 
-.right-side-message{
-    text-align : right;
-    display: flex;
-    justify-content: flex-end;
+
+
+.no-message{
+    display : flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.right-side-message > p{
-    background-color : #edfcdd;
-    width : 270px !important;
-    padding : 10px;
-    border-radius: 5px;
-}
 
-.left-side-message > p{
-    background-color : pink;
-    width : 270px !important;
-    padding : 10px;
-    border-radius: 5px;
+.no-message-here-yet{
+    letter-spacing: 0px !important;
+    font-size : 25px;
+    word-spacing: 1px;
+    background-color : yellow;
+    padding : 0px 10px 0px 10px;
+    background: #dfdfdf;
+    border-radius: 10px;
 }

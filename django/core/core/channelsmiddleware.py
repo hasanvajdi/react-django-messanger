@@ -7,7 +7,6 @@ from channels.middleware import BaseMiddleware
 def get_user(token_key):
     try:
         token = Token.objects.get(key=token_key)
-        print("the user :", token.user)
         return token.user
     except Token.DoesNotExist:
         return AnonymousUser()
@@ -20,11 +19,7 @@ class TokenAuthMiddleware(BaseMiddleware):
     async def __call__(self, scope, receive, send):
         try:
             token_key = (dict((x.split('=') for x in scope['query_string'].decode().split("&")))).get('token', None)
-            print("in try")
-            print("token key ; ", token_key)
         except ValueError:
             token_key = None
-            print("in except")
         scope['user'] = AnonymousUser() if token_key is None else await get_user(token_key)
-        print("scope", scope["user"])
         return await super().__call__(scope, receive, send)

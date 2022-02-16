@@ -12,6 +12,7 @@ import {Groups, GroupsModal} from './chats/Groups';
 import {Channels, ChannelsModal} from './chats/Channels';
 import {Privates, PrivatesModal} from './chats/Privates';
 import ChatBox from './ChatBox';
+import UserCheck from './UserCheck';
 
 
 
@@ -66,6 +67,7 @@ const Home = (props)=>{
     }
 
     const PrivateChats = ()=>{
+        <UserCheck />
         setType("private")
         let access_token = cookies.get("access");
         axios.get("http://127.0.0.1:8000/chat/users/",{
@@ -96,12 +98,13 @@ const Home = (props)=>{
             setPrivateIsOpen(true)
         }
     }
+
     const selectedChatFunc = (chat)=>{
         var selectedChatUrl=null
         if(type === "private"){
             selectedChatUrl = `http://localhost:8000/chat/users/${chat}/`
         }else{selectedChatUrl = `http://localhost:8000/chat/${type}/${chat}/`}
-
+        console.log('chat : ', selectedChatUrl)
         let access_token = cookies.get("access")
         axios.get(selectedChatUrl, {
             headers : {
@@ -109,15 +112,16 @@ const Home = (props)=>{
             }
         })
         .then(res_selectedchat=>{
+            console.log(res_selectedchat.data)
+
             //getting user profile to showing in chat box
             axios.get(`http://localhost:8000/chat/profile/${res_selectedchat.data.id}/`,{
                 headers : {
                     "Authorization": 'Bearer ' + access_token,
                 }
             })
+
             .then(res_selectedprofile=>{
-                console.log("res ", res_selectedprofile.data)
-                console.log("user : ", props.user)
                 setSelectedChat(res_selectedprofile.data);
             })
         })

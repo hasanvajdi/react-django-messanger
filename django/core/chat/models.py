@@ -10,9 +10,12 @@ import string
 class Message(models.Model):
     user            = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
     text            = models.TextField()
-    date            = models.DateTimeField(auto_now_add=True, editable=False)
+    date            = models.DateField(auto_now_add=True, editable=False)
+    time            = models.TimeField(auto_now_add = True, editable=False)
     edited          = models.BooleanField(default=False)
     pinned          = models.BooleanField(default=False)
+
+   
 
 
 ##########################################################################################
@@ -52,11 +55,9 @@ def GroupAvatr(instance, filename):
     return f'group_avatar/{instance.group_id}_avatar.jpg'
 
 def GroupIdCreator():
-    print("group id")
     return int(''.join(random.sample("0123456789", 10)))
 
 def GroupLinkCreator():
-    print("group link")
     return ''.join(random.sample("0123456789" + string.ascii_lowercase + string.ascii_uppercase, 17))
 
 

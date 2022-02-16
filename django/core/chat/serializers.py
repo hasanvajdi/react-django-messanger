@@ -30,6 +30,11 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 class MessageSerializer(serializers.ModelSerializer):
+    time = serializers.SerializerMethodField()
+
     class Meta:
         model = Message
         fields = "__all__"
+    
+    def get_time(self, obj):
+        return obj.time.strftime("%I:%M")

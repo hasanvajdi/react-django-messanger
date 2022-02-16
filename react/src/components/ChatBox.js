@@ -12,40 +12,56 @@ import MessageFormat from './MessageFormat';
 
 const ChatBox = (props)=>{
     const messageTextRef = useRef();
-    let cookies =  new Cookies();
 
+
+    let cookies =  new Cookies();
+    const [currentChat, setCurrentChat] = useState(props.selectedChat.id);
     const [messages, setMessages] = useState([]);
 
-    // getting a list of messages, if any
     useEffect(()=>{
-        axios.get(`http://127.0.0.1:8000/chat/messages/?one=${props.user.pk}&two=${props.selectedChat.user.id}`)
+
+        //getting messages
+        axios.get(`http://127.0.0.1:8000/chat/messages/?one=${props.user.pk}&two=${props.selectedChat.id}`)
         .then((resultGetMessages)=>{
-            setMessages(resultGetMessages.data)
-            console.log(resultGetMessages.data)
+            if (typeof(resultGetMessages.data)=="object")
+            {
+                setMessages(resultGetMessages.data)
+            }
+            else setMessages(null)
+
         })
         .catch((errorGetMessages)=>{
             console.log("get messages error : ", errorGetMessages)
         })
-    },[])
+
+    }, [props.selectedChat.id]);
 
     if(props.chatSocket) {props.chatSocket.onmessage = message=>{
-        setMessages([...messages, JSON.parse(message.data)])
+        if(messages){
+            var message_id = JSON.parse(message.data)["message"]
+            axios.get(`http://127.0.0.1:8000/chat/messages/${message_id}/`)
+            .then(res_newmessage=>{
+                if(messages) setMessages([...messages, res_newmessage.data])
+                else setMessages([res_newmessage.data])
+
+            })
+        }
     }}
 
     const sendMessage = (e)=>{
-        var messageText = messageTextRef.current.state.value
-        var today = new Date();
-        var currentTime = `${today.getHours()}:${today.getMinutes()}`
-        setMessages([...messages, {"text":messageText, "time":currentTime,                     'user' : props.user.pk
-}])
-        props.chatSocket.send(JSON.stringify(
-                {
-                    'text' : messageText,
-                    'from' : props.user.pk,
-                    'to'   : props.selectedChat.id,
-                }
-            )
-        );
+        if(e.type==="click" || e.key==="Enter"){
+            var messageText = messageTextRef.current.state.value
+            messageTextRef.current.state.value = ""
+            props.chatSocket.send(JSON.stringify(
+                    {
+                        'text' : messageText,
+                        'from' : props.user.pk,
+                        'to'   : props.selectedChat.id,
+                    }
+                )
+            );
+        }
+
     }
 
     return(
@@ -74,15 +90,14 @@ const ChatBox = (props)=>{
                 </Row>
             </Col>
 
-            <Col className = "chat-box-messages">
-                {messages && messages.map((message, key)=>{
-                    return <div
-                                key={key}
-                                className={message.user==props.user.pk ? "right-side-message" : "left-side-message"}
-                            >
-                                <p>{message.text}</p>
-                            </div>
-                })}
+            <Col className = {messages ? "chat-box-messages" : "no-message chat-box-messages"}>
+                {
+                    messages ? messages.map((message, key)=>{
+                        return <MessageFormat message={message} user={props.user} key={key} />
+                        })
+                        :<p className = "no-message-here-yet">No message here yet</p>
+                }
+
             </Col>
 
 
@@ -92,7 +107,7 @@ const ChatBox = (props)=>{
                         <AiOutlinePaperClip />
                     </Col>
                     <Col  className="footer-input-col" md={20}>
-                        <Input className="footer-input-input" ref={messageTextRef}/>
+                        <Input className="footer-input-input" ref={messageTextRef} onKeyDown = {sendMessage}/>
                     </Col>
                     <Col  className="footer-send-col" md={2} onClick={sendMessage}>
                         <AiOutlineSend />
