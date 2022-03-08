@@ -92,10 +92,33 @@
 
 
 .categorys{
-    margin-left : 0px !important;
-    border-bottom-left-radius: 4px;
+    position: relative;
+    padding: 0 !important;
+    margin: 0 !important;
+    margin-right:100px;
 }
 
+.MuiBottomNavigationAction-wrapper{
+    align-items: center !important;
+    width: 50% !important;
+}
+
+
+.chat-type{
+    background-color: #dfdfdf !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start;
+    align-items: center;
+
+    width: 100%;
+    height: fit-content !important;
+}
+
+.chat-type > *{
+    padding: 0 !important;
+    margin:0 !important;
+}
 
 .dialogs{
     border-bottom-right-radius: 4px;
@@ -119,4 +142,12 @@
 
 .dialogs::-webkit-scrollbar{
     display: none;
+}
+
+
+.MuiSpeedDial-fab{
+    bottom : 0 !important;
+    width:90% !important;
+    height:40px !important;
+    position: absolute !important;
 }
