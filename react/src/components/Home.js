@@ -17,21 +17,27 @@ import UserCheck from './UserCheck';
 import SpeedDial from '@material-ui/lab/SpeedDial';
 import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
-import PersonIcon from '@material-ui/icons/Person';
-import PeopleIcon from '@material-ui/icons/People';
 
 
 
 
 
+const useStyles = makeStyles((theme) => ({
+    speedDial: {
+      position: 'absolute',
+      width:"100%",
+      paddingBottom:"0",
+      '&.MuiSpeedDial-directionUp, &.MuiSpeedDial-directionLeft': {
+        bottom: theme.spacing(2),
+      },
+      '&.MuiSpeedDial-directionDown, &.MuiSpeedDial-directionRight': {
+        left: theme.spacing(2),
+      },
+    },
+  }));
 
 
 
-const actions = [
-    { icon: <BsFillPersonFill />, name: 'private' },
-    { icon: <BsFillPeopleFill />, name: 'group' },
-    { icon: <BsMegaphoneFill />, name: 'Share' },
-];
 
 
 
@@ -50,7 +56,10 @@ const Home = (props)=>{
     const [open, setOpen] = React.useState(false);
     const [hidden, setHidden] = React.useState(false);
     const [direction, setDirection] = React.useState('up');
+    const classes = useStyles();
 
+    
+    
     const GroupsChats = ()=>{
         let access_token = cookies.get("access");
         axios.get("http://127.0.0.1:8000/chat/groups/",{
@@ -163,6 +172,12 @@ const Home = (props)=>{
         setOpen(true);
     };
 
+    const actions = [
+        { icon: <BsFillPersonFill onClick={createNewGroupChannel}/>, name: 'private' },
+        { icon: <BsFillPeopleFill />, name: 'group' },
+        { icon: <BsMegaphoneFill />, name: 'channel' },
+    ];
+
     return(
         <Container className = "main-chat-container" fluid>
             <Row className = "dialogs-category">
@@ -200,7 +215,7 @@ const Home = (props)=>{
                             onOpen={handleOpen}
                             open={open}
                             direction={direction}
-                            className="create-chat-button"
+                            className={classes.speedDial}                           
                             >
 
                             {

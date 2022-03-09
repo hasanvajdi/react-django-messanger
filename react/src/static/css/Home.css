@@ -147,7 +147,38 @@
 
 .MuiSpeedDial-fab{
     bottom : 0 !important;
-    width:90% !important;
-    height:40px !important;
-    position: absolute !important;
+    width:95% !important;
+    height:50% !important;
+    background-color: #dfdfdf !important;
+    box-shadow: none !important;
+    
 }
+
+
+.MuiSpeedDialIcon-icon{
+    color:black;
+    font-size:35px !important;
+    padding : 0 !important; 
+    margin:0 !important;
+    box-shadow: none !important;
+}
+
+
+.MuiFab-label{
+    font-size:23px;
+}
+
+
+
+
+.MuiSpeedDialAction-fab{
+    background-color: #dfdfdf !important;
+    box-shadow: none !important;
+    color:#DA0037 !important;
+}
+
+
+.MuiSpeedDial-actions{
+    margin-bottom : -55px !important;
+}
+
